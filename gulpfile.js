@@ -11,12 +11,16 @@ var sass = require("gulp-sass");
 var sourcemaps = require("gulp-sourcemaps");
 var uswds = require("./node_modules/uswds-gulp/config/uswds");
 
+const csso = require('postcss-csso');
+
 var watchify = require("watchify");
 var browserify = require("browserify");
 var source = require("vinyl-source-stream");
 var buffer = require("vinyl-buffer");
 var log = require("gulplog");
 var assign = require("lodash.assign");
+
+sass.compiler = require('sass');
 
 // Project Javascript source directory
 const PROJECT_JS_SRC = "./_js";
@@ -57,30 +61,36 @@ gulp.task("copy-uswds-js", () => {
   return gulp.src(`${uswds}/js/**/**`).pipe(gulp.dest(`${JS_DEST}`));
 });
 
-gulp.task("build-sass", function(done) {
+gulp.task('build-sass', function (done) {
   var plugins = [
+    // Autoprefix
     autoprefixer({
       cascade: false,
-      grid: true
+      grid: true,
     }),
-    mqpacker({ sort: true }),
+    // Minify
+    csso({ forceMediaMerge: false }),
   ];
-  return gulp
-    .src(`${PROJECT_SASS_SRC}/styles.scss`)
-    .pipe(sourcemaps.init({ largeFile: true }))
-    .pipe(
-      sass({
-        includePaths: [
-          PROJECT_SASS_SRC,
-          `${uswds}/scss`,
-          `${uswds}/scss/packages`
-        ]
-      })
-    )
-    .pipe(replace(/\buswds @version\b/g, "based on uswds v" + pkg.version))
-    .pipe(postcss(plugins))
-    .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest(CSS_DEST));
+  return (
+    gulp
+      .src([`${PROJECT_SASS_SRC}/*.scss`])
+      .pipe(sourcemaps.init({ largeFile: true }))
+      .pipe(
+        sass.sync({
+          includePaths: [
+            `${PROJECT_SASS_SRC}`,
+            `${uswds}/scss`,
+            `${uswds}/scss/packages`,
+          ],
+        })
+      )
+      .pipe(replace(/\buswds @version\b/g, 'based on uswds v' + pkg.version))
+      .pipe(postcss(plugins))
+      .pipe(sourcemaps.write('.'))
+      // uncomment the next line if necessary for Jekyll to build properly
+      //.pipe(gulp.dest(`${SITE_CSS_DEST}`))
+      .pipe(gulp.dest(`${CSS_DEST}`))
+  );
 });
 
 var customOpts = {
