@@ -24,7 +24,7 @@
     "pa11y-ci": "^2.3.0",
     "path": "^0.12.7",
     "smooth-scroll": "^16.1.0",
-    "uswds": "^2.0.3",
+    "uswds": "^2.9",
     "uswds-gulp": "github:uswds/uswds-gulp",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",

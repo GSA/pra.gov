@@ -29,7 +29,10 @@ $theme-alert-icon-size:               4;
 $theme-alert-padding-x:               2.5;
 
 // Banner
-$theme-banner-font-family:            'ui';
+$theme-banner-background-color: "base-lightest";
+$theme-banner-font-family: "ui";
+$theme-banner-link-color: default;
+$theme-banner-max-width: "desktop";
 
 // Button
 $theme-button-font-family:            'ui';
@@ -52,6 +55,13 @@ $theme-input-state-border-width:      0.5;
 // Header
 $theme-header-font-family:            'ui';
 $theme-megamenu-logo-text-width:      33%;
+
+// Identifier
+$theme-identifier-font-family: "ui";
+$theme-identifier-background-color: "base-darkest";
+$theme-identifier-identity-domain-color: "base-light";
+$theme-identifier-max-width: "desktop";
+$theme-identifier-secondary-link-color: "base-light";
 
 // Navigation
 $theme-navigation-font-family:        'ui';
